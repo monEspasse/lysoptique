@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>VisioPro - Gestion de Caisses</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== VARIABLES & RESET ===== */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+            
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: #2d3748;
+            position: relative;
+            padding-bottom: 70px;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .app-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-img {
+            width: 45px;
+            height: 45px;
+            border-radius: var(--radius-full);
+            border: 3px solid white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== BOUTONS ===== */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            color: white;
+            border: none;
+        }
+
+        /* ===== SECTION TITRES ===== */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        /* ===== GRILLE DES CAISSES ===== */
+        .caisses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .caisse-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .caisse-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .caisse-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .caisse-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .caisse-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .caisse-info {
+            flex: 1;
+        }
+
+        .caisse-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .caisse-location {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .caisse-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .caisse-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            display: block;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .stat-value.positive {
+            color: var(--success);
+        }
+
+        .stat-value.negative {
+            color: var(--danger);
+        }
+
+        /* ===== PANEL DE FILTRES ===== */
+        .filters-panel {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .select-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+
+        /* ===== TABLEAU ===== */
+        .table-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .cumul-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .cumul-table th {
+            text-align: left;
+            padding: 1rem;
+            background: var(--gray-50);
+            color: var(--gray-700);
+            font-weight: 600;
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
+        }
+
+        .cumul-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .cumul-table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination-controls {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .pagination-navigation {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-200);
+            background: white;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--gray-50);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modern-select {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            background: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        /* ===== MODALES ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-content-large {
+            max-width: 1200px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            background: var(--gray-50);
+        }
+
+        /* ===== FORMULAIRES ===== */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-group .required {
+            color: var(--danger);
+        }
+
+        .form-message {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .form-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            display: block;
+        }
+
+        .form-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            display: block;
+        }
+
+        .input-error {
+            border-color: var(--danger) !important;
+        }
+
+        /* ===== LOADING ===== */
+        .loading-indicator {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== ALERTES ===== */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+            border-left-color: var(--info);
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+
+        /* ===== BOUTON FLOTTANT ===== */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 99;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .fab.secondary {
+            background: var(--success-gradient);
+        }
+
+        /* ===== MOBILE BOTTOM NAV ===== */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            z-index: 100;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            color: var(--gray-500);
+            text-decoration: none;
+            transition: var(--transition);
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item span {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: var(--radius-md);
+        }
+
+        /* ===== UTILITAIRES ===== */
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mobile-only {
+            display: none !important;
+        }
+
+        /* ===== MEDIA QUERIES ===== */
+        @media (max-width: 1023px) {
+            .app-container {
+                padding: 0.75rem;
+                padding-bottom: 80px;
+            }
+
+            .header {
+                padding: 0.75rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+
+            .mobile-bottom-nav {
+                display: block;
+            }
+
+            .mobile-only {
+                display: block !important;
+            }
+
+            .caisses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .caisse-card {
+                padding: 1rem;
+            }
+
+            .caisse-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .caisse-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .stat-item {
+                padding: 0.5rem;
+            }
+
+            .filters-panel {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .table-container {
+                padding: 0.5rem;
+            }
+
+            .cumul-table {
+                font-size: 0.7rem;
+            }
+
+            .cumul-table th,
+            .cumul-table td {
+                padding: 0.5rem;
+            }
+
+            .pagination-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pagination-navigation {
+                justify-content: center;
+            }
+
+            .fab-container {
+                bottom: 5rem;
+                right: 1rem;
+            }
+
+            .fab {
+                width: 48px;
+                height: 48px;
+                font-size: 1.25rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                max-height: 80vh;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .modal-footer {
+                padding: 0.75rem 1rem;
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.25rem;
+            }
+
+            .user-info span {
+                display: none;
+            }
+
+            .profile-img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .caisse-title {
+                font-size: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .fab-container {
+                bottom: 4.5rem;
+                right: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1>Gestion de Caisses</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <img src="https://ui-avatars.com/api/?name=Caisse&background=6366f1&color=fff" alt="Profile" class="profile-img">
+            </div>
+        </header>
+
+        <!-- SECTION CAISSES -->
+        <section class="caisses-section">
+            <h2 class="section-title">
+                <i class="fas fa-cash-register"></i>
+                Caisses Physiques
+            </h2>
+            <div class="caisses-grid" id="caissesContainer">
+                <div class="loading-indicator">
+                    <div class="spinner"></div>
+                    <div>Chargement des caisses...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION DÉTAIL MOBILE -->
+        <div id="mobileCaisseDetail" class="mobile-only" style="margin-bottom: 1rem;"></div>
+
+        <!-- SECTION TABLEAU CUMULATIF -->
+        <section class="cumul-section desktop-only">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                Vue Cumulée
+            </h2>
+            
+            <!-- FILTRES -->
+            <div class="filters-panel">
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Date début</label>
+                    <input type="date" id="filterDateStart" class="form-control" onchange="applyCumulFilter()">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Date fin</label>
+                    <input type="date" id="filterDateEnd" class="form-control" onchange="applyCumulFilter()">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-building"></i> Agence</label>
+                    <select id="filterAgence" class="form-control select-control" onchange="applyCumulFilter()">
+                        <option value="">Toutes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-exchange-alt"></i> Mouvement</label>
+                    <select id="filterMouvement" class="form-control select-control" onchange="applyCumulFilter()">
+                        <option value="">Tous</option>
+                        <option value="Entrée">Entrée</option>
+                        <option value="Sortie">Sortie</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-tag"></i> Catégorie</label>
+                    <select id="filterCategorie" class="form-control select-control" onchange="applyCumulFilter()">
+                        <option value="">Toutes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-secondary" onclick="resetCumulFilter()">
+                        <i class="fas fa-undo"></i> Réinitialiser
+                    </button>
+                </div>
+            </div>
+
+            <!-- TABLEAU -->
+            <div class="table-container">
+                <table class="cumul-table" id="cumulTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Agence</th>
+                            <th>Désignation</th>
+                            <th class="text-right">Montant</th>
+                            <th>Mouvement</th>
+                            <th>Utilisateur</th>
+                            <th>Catégorie</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cumulData">
+                        <tr><td colspan="8" class="text-center"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination-controls">
+                <div class="pagination-info" id="page-info"></div>
+                <div class="pagination-navigation">
+                    <button class="pagination-btn" id="prevPage" disabled>
+                        <i class="fas fa-chevron-left"></i> Précédent
+                    </button>
+                    <button class="pagination-btn" id="nextPage">
+                        Suivant <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="items-per-page">
+                    <span>Lignes:</span>
+                    <select id="itemsPerPageSelect" class="modern-select">
+                        <option value="20">20</option>
+                        <option value="50" selected>50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="cumul-message" class="alert alert-info" style="display:none;"></div>
+        </section>
+    </div>
+
+    <!-- BOUTONS FLOTTANTS -->
+    <div class="fab-container">
+        <button class="fab" onclick="openVueGlobale()" title="Retour">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button class="fab secondary" onclick="openDepense()" title="Ajouter une dépense">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- NAVIGATION MOBILE -->
+    <nav class="mobile-bottom-nav mobile-only">
+        <div class="nav-items" id="mobileBottomNav"></div>
+    </nav>
+
+    <!-- CONTENEUR MODALES -->
+    <div id="modal-container"></div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec',
+            REFRESH_INTERVAL: 5 * 60 * 1000, // 5 minutes
+            CAISSES: [
+                { id: 'caisse1', name: 'Cotonou', code: 'Maromilitaire', endpoint: 'caisse1', status: 'online', color: '#4f46e5', icon: 'fa-store' },
+                { id: 'caisse2', name: 'Calavi', code: 'Carrefour ITTA', endpoint: 'caisse2', status: 'online', color: '#ec4899', icon: 'fa-building' },
+                { id: 'caisse3', name: 'Natitingou', code: 'Hôpital départemental', endpoint: 'caisse3', status: 'online', color: '#f59e0b', icon: 'fa-hospital' }
+            ]
+        };
+
+        // ==================== ÉTAT GLOBAL ====================
+        let currentUser = '';
+        let activeCaisseId = null;
+        const caisseDataStore = {};
+        let allCumulData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let itemsPerPage = 50;
+
+        // ==================== INITIALISATION ====================
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await initializeApp();
+                setupEventListeners();
+                startAutoRefresh();
+            } catch (error) {
+                console.error('Erreur initialisation:', error);
+                showError('Erreur lors du chargement de l\'application');
+            }
+        });
+
+        async function initializeApp() {
+            // Récupérer utilisateur
+            currentUser = sessionStorage.getItem("utilisateur") || 
+                         localStorage.getItem("utilisateur") || 
+                         'Gestionnaire';
+            
+            document.getElementById('username-display').textContent = currentUser;
+            document.querySelector('.profile-img').src = 
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser)}&background=6366f1&color=fff&bold=true`;
+
+            // Charger données
+            await loadAllCaisses();
+            
+            if (window.innerWidth < 1024) {
+                setupMobileView();
+            } else {
+                await loadCumulData();
+            }
+        }
+
+        function setupEventListeners() {
+            // Pagination
+            document.getElementById('prevPage')?.addEventListener('click', () => changePage(-1));
+            document.getElementById('nextPage')?.addEventListener('click', () => changePage(1));
+            
+            document.getElementById('itemsPerPageSelect')?.addEventListener('change', function() {
+                itemsPerPage = parseInt(this.value);
+                currentPage = 1;
+                updatePagination();
+                displayCurrentPage();
+            });
+
+            // Redimensionnement
+            window.addEventListener('resize', debounce(handleResize, 250));
+        }
+
+        function handleResize() {
+            if (window.innerWidth >= 1024) {
+                if (allCumulData.length === 0) loadCumulData();
+            } else {
+                setupMobileView();
+            }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function startAutoRefresh() {
+            setInterval(async () => {
+                await loadAllCaisses();
+                if (window.innerWidth >= 1024) {
+                    await loadCumulData();
+                } else if (activeCaisseId) {
+                    await displayCaisseDetailMobile(activeCaisseId);
+                }
+            }, CONFIG.REFRESH_INTERVAL);
+        }
+
+        // ==================== GESTION DES CAISSES ====================
+        async function loadAllCaisses() {
+            const container = document.getElementById('caissesContainer');
+            if (!container) return;
+
+            try {
+                const promises = CONFIG.CAISSES.map(async (caisse) => {
+                    try {
+                        const response = await fetch(`${CONFIG.API_URL}?action=${caisse.endpoint}`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        
+                        const data = await response.json();
+                        
+                        if (data.success && data.data?.rows) {
+                            caisseDataStore[caisse.id] = {
+                                data: data.data.rows,
+                                headers: data.data.headers,
+                                timestamp: data.timestamp
+                            };
+                            
+                            return {
+                                ...caisse,
+                                data: data.data.rows,
+                                lastUpdate: new Date(data.timestamp || Date.now()).toLocaleDateString('fr-FR'),
+                                totalOperations: data.data.rows.length
+                            };
+                        }
+                        return { ...caisse, data: [] };
+                    } catch (error) {
+                        console.error(`Erreur ${caisse.name}:`, error);
+                        return { ...caisse, status: 'offline', lastUpdate: 'Erreur', data: [] };
+                    }
+                });
+
+                const caissesWithData = await Promise.all(promises);
+                renderCaissesCards(caissesWithData);
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                container.innerHTML = '<div class="alert alert-danger">Erreur de chargement des caisses</div>';
+            }
+        }
+
+        function renderCaissesCards(caisses) {
+            const container = document.getElementById('caissesContainer');
+            
+            container.innerHTML = caisses.map(caisse => {
+                const stats = calculateWeeklyStats(caisse);
+                return `
+                    <div class="caisse-card" onclick="openCaisseModal('${caisse.id}', '${caisse.name}')">
+                        <div class="caisse-header">
+                            <div class="caisse-icon" style="background: ${caisse.color}">
+                                <i class="fas ${caisse.icon}"></i>
+                            </div>
+                            <div class="caisse-info">
+                                <div class="caisse-title">${caisse.name}</div>
+                                <div class="caisse-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    ${caisse.code}
+                                </div>
+                                <span class="caisse-status status-${caisse.status}">
+                                    <i class="fas fa-circle"></i>
+                                    ${caisse.status === 'online' ? 'En ligne' : 'Hors ligne'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="caisse-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Solde</span>
+                                <span class="stat-value ${stats.solde >= 0 ? 'positive' : 'negative'}">
+                                    ${formatCurrency(stats.solde)}
+                                </span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Entrées (semaine)</span>
+                                <span class="stat-value positive">${formatCurrency(stats.entrees)}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Sorties (semaine)</span>
+                                <span class="stat-value negative">${formatCurrency(stats.sorties)}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Opérations</span>
+                                <span class="stat-value">${stats.operations || 0}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center" style="font-size: 0.75rem; color: var(--gray-500);">
+                            <i class="fas fa-sync-alt"></i> MAJ: ${caisse.lastUpdate || '--'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function calculateWeeklyStats(caisse) {
+            if (!caisse.data?.length) return { solde: 0, entrees: 0, sorties: 0, operations: 0 };
+            
+            let solde = 0;
+            let entrees = 0;
+            let sorties = 0;
+            let operations = 0;
+            
+            const now = new Date();
+            const weekStart = new Date(now);
+            weekStart.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
+            weekStart.setHours(0, 0, 0, 0);
+            
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+            weekEnd.setHours(23, 59, 59, 999);
+            
+            caisse.data.forEach(row => {
+                const montant = parseFloat(row[2]) || 0;
+                const mouvement = row[3];
+                
+                if (mouvement === 'Entrée') solde += montant;
+                else if (mouvement === 'Sortie') solde -= montant;
+                
+                const rowDate = new Date(row[0]);
+                if (rowDate >= weekStart && rowDate <= weekEnd) {
+                    if (mouvement === 'Entrée') entrees += montant;
+                    else if (mouvement === 'Sortie') sorties += montant;
+                    operations++;
+                }
+            });
+            
+            return { solde, entrees, sorties, operations };
+        }
+
+        // ==================== VUE MOBILE ====================
+        function setupMobileView() {
+            generateMobileNav();
+            if (CONFIG.CAISSES.length > 0 && !activeCaisseId) {
+                selectCaisseMobile(CONFIG.CAISSES[0].id);
+            }
+        }
+
+        function generateMobileNav() {
+            const nav = document.getElementById('mobileBottomNav');
+            if (!nav) return;
+            
+            nav.innerHTML = CONFIG.CAISSES.map((caisse, index) => `
+                <a href="#" class="nav-item ${index === 0 ? 'active' : ''}" 
+                   onclick="selectCaisseMobile('${caisse.id}'); return false;">
+                    <i class="fas ${caisse.icon}"></i>
+                    <span>${caisse.name}</span>
+                </a>
+            `).join('');
+        }
+
+        function selectCaisseMobile(caisseId) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(
+                item => item.querySelector('span')?.textContent === CONFIG.CAISSES.find(c => c.id === caisseId)?.name
+            );
+            if (activeNav) activeNav.classList.add('active');
+            
+            activeCaisseId = caisseId;
+            displayCaisseDetailMobile(caisseId);
+        }
+
+        async function displayCaisseDetailMobile(caisseId) {
+            const detailSection = document.getElementById('mobileCaisseDetail');
+            const caisse = CONFIG.CAISSES.find(c => c.id === caisseId);
+            
+            if (!detailSection || !caisse) return;
+            
+            detailSection.innerHTML = `
+                <div class="text-center" style="padding: 2rem;">
+                    <div class="spinner"></div>
+                    <p>Chargement de ${caisse.name}...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=${caisse.endpoint}`);
+                if (!response.ok) throw new Error('Erreur réseau');
+                
+                const data = await response.json();
+                
+                if (data.success && data.data?.rows) {
+                    renderMobileDetail(caisse, data.data.rows);
+                } else {
+                    throw new Error('Données invalides');
+                }
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                detailSection.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Erreur de chargement
+                        <button class="btn btn-primary" onclick="selectCaisseMobile('${caisseId}')">
+                            <i class="fas fa-redo"></i> Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderMobileDetail(caisse, rows) {
+            const stats = calculateDetailStats(rows);
+            const recentRows = rows.slice(-10).reverse();
+            
+            document.getElementById('mobileCaisseDetail').innerHTML = `
+                <div class="caisse-card" style="margin-bottom: 1rem;">
+                    <div class="caisse-header">
+                        <div class="caisse-icon" style="background: ${caisse.color}">
+                            <i class="fas ${caisse.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="caisse-title">${caisse.name}</div>
+                            <div class="caisse-location">${caisse.code}</div>
+                            <span class="caisse-status status-${caisse.status}">
+                                <i class="fas fa-circle"></i> ${caisse.status === 'online' ? 'En ligne' : 'Hors ligne'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0;">
+                        <div class="stat-item">
+                            <span class="stat-label">SOLDE</span>
+                            <div class="stat-value ${stats.solde >= 0 ? 'positive' : 'negative'}">
+                                ${formatCurrency(stats.solde)}
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">OPÉRATIONS</span>
+                            <div class="stat-value">${rows.length}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <div class="stat-item" style="flex: 1; background: rgba(16, 185, 129, 0.1);">
+                            <span class="stat-label">ENTRÉES</span>
+                            <div class="stat-value positive">${formatCurrency(stats.entrees)}</div>
+                        </div>
+                        <div class="stat-item" style="flex: 1; background: rgba(239, 68, 68, 0.1);">
+                            <span class="stat-label">SORTIES</span>
+                            <div class="stat-value negative">${formatCurrency(stats.sorties)}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; font-weight: 600;">Dernières opérations</h3>
+                        <button class="btn btn-primary" onclick="openCaisseModal('${caisse.id}', '${caisse.name}')">
+                            Voir tout <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="table-container" style="padding: 0;">
+                        <table class="cumul-table" style="font-size: 0.7rem;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Désignation</th>
+                                    <th class="text-right">Montant</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${recentRows.map(row => `
+                                    <tr>
+                                        <td>${formatDate(row[0])}</td>
+                                        <td>${truncate(row[1] || '', 20)}</td>
+                                        <td class="text-right" style="color: ${row[3] === 'Entrée' ? 'var(--success)' : 'var(--danger)'}">
+                                            ${formatCurrency(row[2])}
+                                        </td>
+                                        <td>
+                                            <span class="badge ${row[3] === 'Entrée' ? 'badge-success' : 'badge-danger'}">
+                                                ${row[3] || ''}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculateDetailStats(rows) {
+            let solde = 0;
+            let entrees = 0;
+            let sorties = 0;
+            
+            rows.forEach(row => {
+                const montant = parseFloat(row[2]) || 0;
+                const mouvement = row[3];
+                
+                if (mouvement === 'Entrée') {
+                    solde += montant;
+                    entrees += montant;
+                } else if (mouvement === 'Sortie') {
+                    solde -= montant;
+                    sorties += montant;
+                }
+            });
+            
+            return { solde, entrees, sorties };
+        }
+
+        // ==================== DONNÉES CUMULATIVES ====================
+        async function loadCumulData() {
+            const cumulData = document.getElementById('cumulData');
+            if (!cumulData) return;
+            
+            cumulData.innerHTML = '<tr><td colspan="8" class="text-center"><div class="spinner"></div></td></tr>';
+            
+            try {
+                allCumulData = [];
+                
+                for (const caisse of CONFIG.CAISSES) {
+                    const response = await fetch(`${CONFIG.API_URL}?action=${caisse.endpoint}`);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        if (data.success && data.data?.rows) {
+                            data.data.rows.forEach(row => {
+                                allCumulData.push({
+                                    agence: caisse.name,
+                                    agenceCode: caisse.id,
+                                    date: row[0] || '',
+                                    designation: row[1] || '',
+                                    montant: parseFloat(row[2]) || 0,
+                                    mouvement: row[3] || '',
+                                    user: row[4] || '',
+                                    categorie: row[6] || '',
+                                    note: row[7] || '',
+                                    rawDate: new Date(row[0] || Date.now())
+                                });
+                            });
+                        }
+                    }
+                }
+                
+                allCumulData.sort((a, b) => b.rawDate - a.rawDate);
+                updateFilterOptions();
+                resetCumulFilter();
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                cumulData.innerHTML = '<tr><td colspan="8" class="text-center">Erreur de chargement</td></tr>';
+            }
+        }
+
+        function updateFilterOptions() {
+            const agenceFilter = document.getElementById('filterAgence');
+            const categorieFilter = document.getElementById('filterCategorie');
+            
+            if (agenceFilter) {
+                agenceFilter.innerHTML = '<option value="">Toutes</option>' + 
+                    CONFIG.CAISSES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            }
+            
+            if (categorieFilter) {
+                const categories = [...new Set(allCumulData.map(i => i.categorie).filter(Boolean))];
+                categorieFilter.innerHTML = '<option value="">Toutes</option>' + 
+                    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            }
+        }
+
+        function applyCumulFilter() {
+            const dateStart = document.getElementById('filterDateStart')?.value;
+            const dateEnd = document.getElementById('filterDateEnd')?.value;
+            const agence = document.getElementById('filterAgence')?.value;
+            const mouvement = document.getElementById('filterMouvement')?.value;
+            const categorie = document.getElementById('filterCategorie')?.value;
+            
+            filteredData = allCumulData.filter(item => {
+                if (!item.date) return false;
+                
+                let dateMatch = true;
+                if (dateStart || dateEnd) {
+                    const itemDate = new Date(item.date);
+                    const startDate = dateStart ? new Date(dateStart) : null;
+                    const endDate = dateEnd ? new Date(dateEnd) : null;
+                    
+                    if (startDate && endDate) {
+                        dateMatch = itemDate >= startDate && itemDate <= endDate;
+                    } else if (startDate) {
+                        dateMatch = itemDate >= startDate;
+                    } else if (endDate) {
+                        dateMatch = itemDate <= endDate;
+                    }
+                }
+                
+                return dateMatch &&
+                       (!agence || item.agenceCode === agence) &&
+                       (!mouvement || item.mouvement === mouvement) &&
+                       (!categorie || item.categorie === categorie);
+            });
+            
+            currentPage = 1;
+            updatePagination();
+            displayCurrentPage();
+            
+            const message = document.getElementById('cumul-message');
+            if (message) {
+                message.textContent = `📊 ${filteredData.length} enregistrement(s) trouvé(s)`;
+                message.style.display = 'flex';
+            }
+        }
+
+        function resetCumulFilter() {
+            const today = new Date();
+            const lastWeek = new Date(today);
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            
+            document.getElementById('filterDateStart').value = lastWeek.toISOString().split('T')[0];
+            document.getElementById('filterDateEnd').value = today.toISOString().split('T')[0];
+            document.getElementById('filterAgence').value = '';
+            document.getElementById('filterMouvement').value = '';
+            document.getElementById('filterCategorie').value = '';
+            
+            applyCumulFilter();
+        }
+
+        function displayCurrentPage() {
+            const cumulData = document.getElementById('cumulData');
+            if (!cumulData) return;
+            
+            if (!filteredData.length) {
+                cumulData.innerHTML = '<tr><td colspan="8" class="text-center">Aucune donnée</td></tr>';
+                return;
+            }
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, filteredData.length);
+            const pageData = filteredData.slice(start, end);
+            
+            cumulData.innerHTML = pageData.map(item => `
+                <tr>
+                    <td>${formatDate(item.date)}</td>
+                    <td>
+                        <span class="badge" style="background: ${getCaisseColor(item.agenceCode)}20; color: ${getCaisseColor(item.agenceCode)};">
+                            ${item.agence}
+                        </span>
+                    </td>
+                    <td title="${item.designation}">${truncate(item.designation, 50)}</td>
+                    <td class="text-right">${formatCurrency(item.montant)}</td>
+                    <td>
+                        <span class="badge ${item.mouvement === 'Entrée' ? 'badge-success' : 'badge-danger'}">
+                            ${item.mouvement || ''}
+                        </span>
+                    </td>
+                    <td>${item.user || ''}</td>
+                    <td>${item.categorie || ''}</td>
+                    <td title="${item.note}">${truncate(item.note, 30)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updatePagination() {
+            const pageInfo = document.getElementById('page-info');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            
+            if (!pageInfo) return;
+            
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            
+            if (filteredData.length === 0) {
+                pageInfo.textContent = 'Aucune donnée';
+                if (prevBtn) prevBtn.disabled = true;
+                if (nextBtn) nextBtn.disabled = true;
+                return;
+            }
+            
+            const start = (currentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(currentPage * itemsPerPage, filteredData.length);
+            
+            pageInfo.textContent = `${start}-${end} sur ${filteredData.length} enregistrements`;
+            
+            if (prevBtn) prevBtn.disabled = currentPage === 1;
+            if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            
+            if (direction === 1 && currentPage < totalPages) {
+                currentPage++;
+            } else if (direction === -1 && currentPage > 1) {
+                currentPage--;
+            }
+            
+            updatePagination();
+            displayCurrentPage();
+        }
+
+        // ==================== MODALES ====================
+        window.openCaisseModal = function(caisseId, caisseName) {
+            const modalContainer = document.getElementById('modal-container');
+            
+            modalContainer.innerHTML = `
+                <div class="modal-overlay active" id="modal-${caisseId}">
+                    <div class="modal-content modal-content-large">
+                        <div class="modal-header">
+                            <h3 class="modal-title">
+                                <i class="fas fa-cash-register"></i>
+                                Caisse ${caisseName}
+                            </h3>
+                            <button class="modal-close" onclick="closeModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center" style="padding: 2rem;">
+                                <div class="spinner"></div>
+                                <p>Chargement...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => loadCaisseModalData(caisseId, caisseName), 100);
+        };
+
+        async function loadCaisseModalData(caisseId, caisseName) {
+            const modalBody = document.querySelector(`#modal-${caisseId} .modal-body`);
+            
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=${caisseId}`);
+                if (!response.ok) throw new Error('Erreur réseau');
+                
+                const data = await response.json();
+                
+                if (!data.success || !data.data?.rows) {
+                    throw new Error('Données invalides');
+                }
+                
+                const rows = data.data.rows.reverse();
+                
+                modalBody.innerHTML = `
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" class="form-control" 
+                               placeholder="Rechercher..." 
+                               onkeyup="filterModalTable('${caisseId}', this.value)">
+                    </div>
+                    <div class="table-container" style="padding: 0;">
+                        <table class="cumul-table" id="modal-table-${caisseId}">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Désignation</th>
+                                    <th class="text-right">Montant</th>
+                                    <th>Mouvement</th>
+                                    <th>Utilisateur</th>
+                                    ${window.innerWidth >= 1024 ? '<th>Catégorie</th><th>Note</th>' : ''}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows.map(row => `
+                                    <tr>
+                                        <td>${formatDate(row[0])}</td>
+                                        <td title="${row[1] || ''}">${truncate(row[1] || '', 50)}</td>
+                                        <td class="text-right" style="color: ${row[3] === 'Entrée' ? 'var(--success)' : 'var(--danger)'}">
+                                            ${formatCurrency(row[2])}
+                                        </td>
+                                        <td>
+                                            <span class="badge ${row[3] === 'Entrée' ? 'badge-success' : 'badge-danger'}">
+                                                ${row[3] || ''}
+                                            </span>
+                                        </td>
+                                        <td>${row[4] || ''}</td>
+                                        ${window.innerWidth >= 1024 ? `
+                                            <td>${row[6] || ''}</td>
+                                            <td title="${row[7] || ''}">${truncate(row[7] || '', 30)}</td>
+                                        ` : ''}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center" style="margin-top: 1rem; padding: 1rem; background: var(--gray-50); border-radius: var(--radius-md);">
+                        <strong>${rows.length} opération(s)</strong>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                modalBody.innerHTML = `
+                    <div class="text-center" style="padding: 2rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: var(--danger);"></i>
+                        <p style="margin: 1rem 0;">Erreur de chargement</p>
+                        <button class="btn btn-primary" onclick="loadCaisseModalData('${caisseId}', '${caisseName}')">
+                            <i class="fas fa-redo"></i> Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        window.filterModalTable = function(caisseId, searchTerm) {
+            const table = document.getElementById(`modal-table-${caisseId}`);
+            if (!table) return;
+            
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            searchTerm = searchTerm.toLowerCase();
+            
+            Array.from(rows).forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        };
+
+        window.closeModal = function() {
+            // me permet de me rassurer que tous est a jour
+           window.location.href = 'Caisse.html';
+        };
+
+        // ==================== GESTION DES DÉPENSES ====================
+window.openDepense = async function() {
+    const modalContainer = document.getElementById('modal-container');
+    
+    modalContainer.innerHTML = `
+        <div class="modal-overlay active" id="depenseModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <i class="fas fa-plus-circle"></i>
+                        Ajouter une Dépense
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="spinner"></div>
+                        <p>Chargement des données...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    try {
+        // Note: Pour la lecture des données, on ne peut PAS utiliser no-cors
+        // donc on garde le mode normal pour GET
+        const response = await fetch(`${CONFIG.API_URL}?action=getconfigdata`);
+        const data = await response.json();
+        
+        if (!data.success || !data.data) {
+            throw new Error('Impossible de charger les données');
+        }
+        
+        const { categories, agences } = data.data;
+        
+        document.querySelector('#depenseModal .modal-body').innerHTML = `
+            <form id="depenseForm">
+                <div class="form-group">
+                    <label>Date <span class="required">*</span></label>
+                    <input type="date" id="depenseDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Agence <span class="required">*</span></label>
+                    <select id="depenseAgence" class="form-control select-control" required>
+                        <option value="">Sélectionner</option>
+                        ${agences.map(a => `<option value="${a}">${a}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Désignation <span class="required">*</span></label>
+                    <input type="text" id="depenseDesignation" class="form-control" 
+                           placeholder="Description de la dépense" required>
+                </div>
+                <div class="form-group">
+                    <label>Catégorie <span class="required">*</span></label>
+                    <select id="depenseCategorie" class="form-control select-control" required>
+                        <option value="">Sélectionner</option>
+                        ${categories.map(c => `<option value="${c.value}">${c.label}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Montant (FCFA) <span class="required">*</span></label>
+                    <input type="number" id="depenseMontant" class="form-control" 
+                           placeholder="0" min="0" step="1" required>
+                </div>
+                <div id="form-message" class="form-message"></div>
+            </form>
+            <div class="modal-footer" style="padding: 1rem 0 0 0;">
+                <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                <button class="btn btn-primary" onclick="submitDepense()">Enregistrer</button>
+            </div>
+        `;
+        
+        document.getElementById('depenseDate').value = new Date().toISOString().split('T')[0];
+        
+    } catch (error) {
+        console.error('Erreur:', error);
+        document.querySelector('#depenseModal .modal-body').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Erreur: ${error.message}
+            </div>
+            <div class="modal-footer" style="padding: 1rem 0 0 0;">
+                <button class="btn btn-primary" onclick="closeModal()">Fermer</button>
+            </div>
+        `;
+    }
+};
+
+window.submitDepense = async function() {
+    const form = document.getElementById('depenseForm');
+    const formMessage = document.getElementById('form-message');
+    
+    // Réinitialiser le message
+    formMessage.textContent = '';
+    formMessage.className = 'form-message';
+    
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        formMessage.textContent = 'Veuillez remplir tous les champs obligatoires.';
+        formMessage.classList.add('error');
+        return;
+    }
+    
+    const username = sessionStorage.getItem("utilisateur") || 
+                    localStorage.getItem("utilisateur") || 
+                    'Utilisateur';
+    
+    const depenseData = {
+        action: 'addDepense',
+        date: document.getElementById('depenseDate').value,
+        agence: document.getElementById('depenseAgence').value,
+        designation: document.getElementById('depenseDesignation').value.trim(),
+        categorie: document.getElementById('depenseCategorie').value,
+        utilisateur: username,
+        montant: parseFloat(document.getElementById('depenseMontant').value)
+    };
+    
+    if (isNaN(depenseData.montant) || depenseData.montant <= 0) {
+        formMessage.textContent = 'Veuillez entrer un montant valide.';
+        formMessage.classList.add('error');
+        document.getElementById('depenseMontant').focus();
+        return;
+    }
+    
+const submitButton = document.querySelector('#depenseModal .btn-primary');
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enregistrement...';
+
+    try {
+        const apiUrl = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA?action=addDepense";
+
+            await fetch(apiUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(depenseData)
+            });
+
+        // Succès
+        formMessage.textContent = '✅ Dépense enregistrée avec succès!';
+        formMessage.classList.add('success');
+        
+        // Réinitialiser le formulaire après succès
+        form.reset();
+        
+        // Fermer après 1.5s
+        setTimeout(() => {
+            closeModal();
+            // Rafraîchir les données si nécessaire
+            if (typeof refreshExpenses === 'function') {
+                refreshExpenses();
+            }
+        }, 1500);
+
+    } catch (error) {
+        console.error("Erreur:", error);
+        formMessage.innerHTML = `❌ ${error.message || "Une erreur est survenue lors de l'enregistrement"}`;
+        logError(`Dépense: ${errorMsg}`);
+        formMessage.classList.add('error');
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Enregistrer';
+    }
+}
+     // ==================== UTILITAIRES ====================
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            try {
+                return new Date(dateString).toLocaleDateString('fr-FR');
+            } catch {
+                return dateString;
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('fr-FR', { 
+                minimumFractionDigits: 0, 
+                maximumFractionDigits: 0 
+            }).format(amount || 0);
+        }
+
+        function truncate(text, length) {
+            if (!text) return '';
+            return text.length > length ? text.substring(0, length) + '...' : text;
+        }
+
+        function getCaisseColor(caisseId) {
+            return CONFIG.CAISSES.find(c => c.id === caisseId)?.color || '#4f46e5';
+        }
+
+        window.openVueGlobale = function() {
+            window.location.href = 'Accueil.html';
+        };
+
+        function showError(message) {
+            const container = document.querySelector('.app-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ${message}
+                    </div>
+                `;
+            }
+        }
+
+        // Gestionnaire clic extérieur pour fermer les modales
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
