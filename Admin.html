@@ -3291,7 +3291,7 @@ body {
         // Charger les catégories
         loadBanqueCategories();
         
-        fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=banque')
+        fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=banque')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data?.rows) {
@@ -3381,7 +3381,7 @@ body {
     function loadGrandCaisseData() {
         showTableSkeleton('grandCaisse');
         
-        fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=grandcaisse')
+        fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=grandcaisse')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data?.rows) {
@@ -3473,7 +3473,7 @@ body {
 function loadPointFacturationData() {
     showTableSkeleton('pointFacturation');
     
-    fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=pointfacturation')
+    fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=pointfacturation')
         .then(response => response.json())
         .then(data => {
             if (data.success && data.data?.rows) {
@@ -3654,7 +3654,7 @@ function displayPointFacturationData(data) {
 
         try {
             const timestamp = new Date().getTime();
-            const apiUrl = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=getDealAssurance&_=${timestamp}`;
+            const apiUrl = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=getDealAssurance&_=${timestamp}`;
             
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
@@ -3921,7 +3921,7 @@ async function effectuerReglementFournisseur() {
             dateReglement: new Date().toISOString().split('T')[0]
         };
 
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=reglementfournisseur";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=reglementfournisseur";
         
         const response = await fetch(url, {
             method: 'POST',
@@ -3969,7 +3969,7 @@ async function effectuerReglementFournisseur() {
             return;
         }
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deletdepotData";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deletdepotData";
         
         showProgressOverlay('Suppression du point de facturation...');
         
@@ -4001,7 +4001,7 @@ async function effectuerReglementFournisseur() {
     function loadUsersData() {
         showTableSkeleton('users');
         
-        fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=listedesutilisateur')
+        fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=listedesutilisateur')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data?.rows) {
@@ -4562,7 +4562,7 @@ async function effectuerReglementFournisseur() {
     // ==================== FONCTIONS POUR LA Utilisateurs ====================
     async function loadBanqueCategories() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=getconfigdata');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=getconfigdata');
             const data = await response.json();
             
             if (data.success && data.data?.categories) {
@@ -4690,7 +4690,7 @@ async function effectuerReglementFournisseur() {
             analyse: analyse
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=adduser";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=adduser";
         
         const submitBtn = document.getElementById('submitUserBtn');
         const originalText = submitBtn.innerHTML;
@@ -4827,7 +4827,7 @@ async function effectuerReglementFournisseur() {
             analyse: analyse
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=updateuser";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=updateuser";
         
         const submitBtn = document.getElementById('updateUserBtn');
         const originalText = submitBtn.innerHTML;
@@ -4867,7 +4867,7 @@ async function effectuerReglementFournisseur() {
 
     // ==================== FONCTION DELETE USER MODIFIÉE ====================
     function deleteUser(username) {
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deleteuser";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deleteuser";
         
         showProgressOverlay('Suppression de l\'utilisateur...');
         
@@ -4976,7 +4976,7 @@ async function effectuerReglementFournisseur() {
             return;
         }
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=updatebanque";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=updatebanque";
         
         const updatedData = {
             idUnique: idUnique,
@@ -5383,7 +5383,7 @@ async function effectuerReglementFournisseur() {
             categorie: categorie
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addGrandCaisse";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addGrandCaisse";
         
         const submitBtn = document.getElementById('submitGrandCaisseBtn');
         const originalText = submitBtn.innerHTML;
@@ -5436,7 +5436,7 @@ async function effectuerReglementFournisseur() {
 function loadFournisseurData() {
     showTableSkeleton('fournisseur');
     
-    fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=importfournisseur')
+    fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=importfournisseur')
         .then(response => response.json())
         .then(data => {
             if (data.success && data.data?.rows) {
@@ -6158,7 +6158,7 @@ function submitNewFournisseur() {
     
     console.log('Payload JSON:', payload); // Pour debug
     
-    const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addfacturefournisseur";
+    const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addfacturefournisseur";
     
     const submitBtn = document.getElementById('submitFournisseurBtn');
     const originalText = submitBtn.innerHTML;
@@ -6356,7 +6356,7 @@ function submitFournisseurUpdate(idFacture) {
     
     console.log('Update payload:', payload);
     
-    const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=editefacturefournisseur";
+    const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=editefacturefournisseur";
     
     const submitBtn = document.getElementById('updateFournisseurBtn');
     const originalText = submitBtn.innerHTML;
@@ -6414,7 +6414,7 @@ function deleteFournisseurFacture(idFacture) {
         Idfacture: idFacture
     };
     
-    const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deletefacturefournisseur";
+    const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deletefacturefournisseur";
     
     showProgressOverlay('Suppression de la facture...');
     
@@ -6448,7 +6448,7 @@ function deleteFournisseurFacture(idFacture) {
     function loadPersonnelData() {
         showTableSkeleton('personnel');
         
-        fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=importpersonnel')
+        fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=importpersonnel')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data?.rows) {
@@ -6625,7 +6625,7 @@ function deleteFournisseurFacture(idFacture) {
             IdEmploye: idEmploye
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deletepersonnel";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deletepersonnel";
         
         showProgressOverlay('Suppression du collaborateur...');
         
@@ -6891,7 +6891,7 @@ function deleteFournisseurFacture(idFacture) {
             Statut: statut
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addpersonnel";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addpersonnel";
         
         const submitBtn = document.getElementById('submitPersonnelBtn');
         const originalText = submitBtn.innerHTML;
@@ -7407,7 +7407,7 @@ function deleteFournisseurFacture(idFacture) {
             Statut: statut
         };
         
-        const url = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=updatepersonnel";
+        const url = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=updatepersonnel";
         
         const submitBtn = document.getElementById('updatePersonnelBtn');
         const originalText = submitBtn.innerHTML;
