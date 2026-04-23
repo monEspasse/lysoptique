@@ -1733,7 +1733,7 @@ class FactureManager {
 
     async loadData() {
         try {
-            const apiUrl = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=importassurance`;
+            const apiUrl = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=importassurance`;
             
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
@@ -2804,7 +2804,7 @@ function submitFactureUpdate(index) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
     submitBtn.disabled = true;
 
-    const url = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=updateFacture`;
+    const url = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=updateFacture`;
     
     fetch(url, {
         method: 'POST',
@@ -2845,7 +2845,7 @@ function submitFactureUpdate(index) {
 
 async function loadEditDynamicOptions(currentSociete, currentAssurance, currentCompagnie) {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=importassurance');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=importassurance');
         if (!response.ok) throw new Error('Erreur réseau');
 
         const data = await response.json();
@@ -2917,7 +2917,7 @@ async function cancelFacture(index) {
     try {
         // 4. Appel au Google Apps Script avec anti-cache
         const timestamp = new Date().getTime();
-        const url = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deleteFacture`;
+        const url = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deleteFacture`;
         
         const response = await fetch(url, {
             method: 'POST',
@@ -3134,7 +3134,7 @@ async function submitNewFacture() {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
 
     try {
-        const apiUrl = "https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addfacture";
+        const apiUrl = "https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addfacture";
 
         await fetch(apiUrl, {
             method: 'POST',
@@ -3168,7 +3168,7 @@ async function submitNewFacture() {
 
 async function loadDynamicOptions() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=importassurance');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=importassurance');
         if (!response.ok) throw new Error('Erreur réseau');
         
         const data = await response.json();
@@ -3394,7 +3394,7 @@ async function confirmerGenerationDepotSelectionne() {
             facturationId: facturationId // MÊME ID que celui utilisé pour marquer les factures
         };
         
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=adddepotData';
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=adddepotData';
         
         const timestamp = new Date().getTime();
         await fetch(`${scriptUrl}&_=${timestamp}`, {
@@ -3438,7 +3438,7 @@ async function confirmerGenerationDepotSelectionne() {
 async function updateFacturesSelectionnees(factures) {
     try {
         const timestamp = new Date().getTime();
-        const url = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=updateFacturesSelectionnees&_=${timestamp}`;
+        const url = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=updateFacturesSelectionnees&_=${timestamp}`;
         const facturationId = `FACT-${timestamp}-${Math.random().toString(36).substr(2, 9)}`;
         const idClients = factures.map(f => f['Id Client']).filter(id => id);
         
@@ -3471,7 +3471,7 @@ async function loadFacturationDataForSection() {
 
     try {
         const timestamp = new Date().getTime();
-        const apiUrl = `https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=pointfacturation&_=${timestamp}`;
+        const apiUrl = `https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=pointfacturation&_=${timestamp}`;
         
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
