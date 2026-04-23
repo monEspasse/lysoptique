@@ -3648,7 +3648,7 @@
     async function ouvrirDetailClient(id) {
         showOverlay();
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=dataclient');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=dataclient');
             const result = await response.json();
             if (result.success && result.data) {
                 const headers = result.data.headers;
@@ -3970,7 +3970,7 @@ function prepareCommandePourClient(clientId) {
     async function loadClientsData() {
         showLoadingState();
         try {
-            const res = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=dataclient');
+            const res = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=dataclient');
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const result = await res.json();
             if (!result.success) throw new Error(result.message || "Erreur serveur");
@@ -4020,7 +4020,7 @@ function prepareCommandePourClient(clientId) {
     // ==================== CHARGEMENT TYPES DE COMMANDE ====================
     async function chargerTypesCommande() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=commandefournisseurverre');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=commandefournisseurverre');
             const result = await response.json();
             
             if (result.success && result.data && result.data.rows) {
@@ -4205,7 +4205,7 @@ async function deleteClient(clientId, clientName) {
         try {
             showOverlay();
             const username = sessionStorage.getItem("utilisateur") || localStorage.getItem("utilisateur");
-            await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=deleteclient', {
+            await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=deleteclient', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
@@ -4267,7 +4267,7 @@ async function markAsReceived(clientId) {
         const today = new Date().toISOString().split('T')[0];
         
         // Envoyer l'ancien statut pour vérification côté serveur
-        await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addpo', {
+        await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addpo', {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
@@ -4321,7 +4321,7 @@ async function markAsReceived(clientId) {
 
     async function loadFournisseurs() {
         try {
-            const res = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=fournisseur');
+            const res = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=fournisseur');
             const result = await res.json();
             fournisseursList = (result.success&&result.data?.rows)?result.data.rows.map(r=>r[0]).filter(Boolean):['SIVO','Canada Optic','Zaih'];
         } catch { fournisseursList=['SIVO','Canada Optic','Zaih']; }
@@ -4344,7 +4344,7 @@ async function markAsReceived(clientId) {
     }
 
     async function fetchClientDetails(clientId) {
-        const res = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=dataclient');
+        const res = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=dataclient');
         const result = await res.json();
         if (!result.success) throw new Error();
         const hm={};result.data.headers.forEach((h,i)=>{hm[h]=i;});
@@ -4990,7 +4990,7 @@ async function markAsReceived(clientId) {
                 dateLivraisonPrevue: datesLivraison.get(c.clientId) || ''
             }));
             
-            await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=addpo', {
+            await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=addpo', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {'Content-Type': 'application/json'},
@@ -5018,7 +5018,7 @@ async function markAsReceived(clientId) {
 
 async function loadCompanyInfo() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec?action=infomonentreprise');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec?action=infomonentreprise');
         const result = await response.json();
         
         if (result.success && result.data && result.data.rows) {
@@ -5374,7 +5374,7 @@ async function loadCompanyInfo() {
 }
 
 
-const API_BASE = 'https://script.google.com/macros/s/AKfycbzFmMSBTBdw8_DcCC1R0Oice_ecTCrggK4Gp59elsQSwhwdRjuuweo18_z79nTZUv6pgA/exec';
+const API_BASE = 'https://script.google.com/macros/s/AKfycbzuIWHgCmArzXosyS704ric0b605lEzCcAHaUHCDdyxd4QVWzOxbOt8LD9mSIaUSXM93A/exec';
 let venteModal = null;
 
 function vEl(id) {
